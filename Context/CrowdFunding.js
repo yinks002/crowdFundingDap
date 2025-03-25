@@ -121,22 +121,56 @@ export const CrowdFundingProvider =  ({children}) =>{
    }
 
 //CHECK IF WALLET IS CONNECTED
-const checkIfwalletConnected = async()=>{
-    try {
-        if(!window.ethereum) return setOpenError(true), setError(
-            "install metamask"
-        );
-    const  accounts = await window.ethereum.request({
-        method: "eth_accounts",
-    });
-    if(accounts.length){
-        setCurrentAcount(accounts[0]);
-    }
-    } catch (error) {
-        console.log("no account found", error);
-    }
-}
+    const checkIfwalletConnected = async()=>{
+        try {
+            if(!window.ethereum) return setOpenError(true), setError(
+                "install metamask"
+            );
+        const  accounts = await window.ethereum.request({
+            method: "eth_accounts",
+        });
+        if(accounts.length){
+            setCurrentAcount(accounts[0]);
+        }else{
+            console.log("no account found")
+        }
+        } catch (error) {
+            console.log("error", error);
+        }
+    };
 
+
+    useEffect(()=>{
+        checkIfwalletConnected();
+    },[]);
+
+
+    //connect wallet function
+    const connectWallet = async()=>{
+        try {
+            if(!window.ethereum) return console.log("install metamask");
+            const accounts= await window.ethereum.request({
+                method: "eth_requestAccounts",
+            });
+            setCurrentAcount(accounts[0]);
+        } catch (error) {
+            console.log("error while connecting to wallet", error);
+        }
+    }
+
+
+    return (
+        <CrowdFundingContext.Provider
+        
+        value={{titleData, currrentAccount,
+            createCampaign,
+            getCampaigns,
+            getCampaigns,
+            donate,
+            getDonations,
+            connectWallet
+        }}> {children}</CrowdFundingContext.Provider>
+    );
 
 
 
