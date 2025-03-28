@@ -43,8 +43,27 @@ const Footer = () => {
                             </p>
                         ))}
 
-                        </div>     
+                        </div>  
+
+                        <div>
+                            <h6 className="mb-4 justify-center font-semibold uppercase md:justify-start">
+                                Contact
+                            </h6>
+                            {contactList.map((el, i)=>(
+                                <p className='mb-4' key={i + 1}>
+                                    <a href="#!">{el}</a>
+                                </p>
+                            ))}
+                            </div>   
+
                 </div>
+            </div>
+
+            <div className='backgroundMain p-6 text-center'>
+                <span> @ 2025 copyright: yinks and lets fucking gooooo init</span>
+                <a className='font-semibold' href="">
+                    Crypto King
+                </a>
             </div>
 
         </footer>

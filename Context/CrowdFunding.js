@@ -169,7 +169,7 @@ export const CrowdFundingProvider =  ({children}) =>{
         
         value={{titleData, currrentAccount,
             createCampaign,
-            getCampaigns,
+            getUserCampaigns,
             getCampaigns,
             donate,
             getDonations,
