@@ -22,7 +22,7 @@ const Navbar = ()=>{
                     >
                         <Logo color= "text-white" />
                         <span className="ml-2 text-xl font-bold tracking-wide text-gray-100 uppercase">
-                            Company
+                            YinksCrowFund
                         </span>
                     </a>
 
