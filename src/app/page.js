@@ -4,7 +4,7 @@ import Image from "next/image";
 
 //internal import
 import { CrowdFundingContext } from "../../Context/CrowdFunding";
-import {Hero, Card, PopUp} from "../../Components/Hero";
+import {Hero, Card, Popup} from "../../Components/index";
 
 const Home = ()=>{
   const {titleData, 
@@ -14,22 +14,26 @@ const Home = ()=>{
     getDonations} = useContext(CrowdFundingContext);
     
 
-    const [allcampign, setAllcampaign] = useState();
+    const [allcampaign, setAllcampaign] = useState();
     const [usercampaign, setUsercampaign]= useState();
 
 
-    useEffect(()=>{
-      const getCampaignsData = getCampaigns();
-      const userCampaignsData = getUserCampaigns();
-
-      return async ()=>{
-        const allData = await getCampaignsData;
-        const userData = await userCampaignsData;
-
+    useEffect(() => {
+      const fetchData = async () => {
+        const allData = await getCampaigns();
+        const userData = await getUserCampaigns();
+    
         setAllcampaign(allData);
         setUsercampaign(userData);
-      }
-    },[]);
+    
+        console.log("uscam", userData);
+        
+        console.log("hiiii");
+      };
+    
+      fetchData(); // Call the async function inside useEffect
+    }, []);
+    
 
     //Donation popup
     const [openModel, setOpenModel]= useState(false);
@@ -38,21 +42,23 @@ const Home = ()=>{
 
     return (
       <>
+      
       <Hero titleData={titleData} createCampaign= {createCampaign}/>
       <Card title= "All listed campaign"
-      allcampign= {allcampign}
+      allcampaign= {allcampaign}
       setOpenModel= {setOpenModel}
       setDonate = {setDonateCampaign}
       />
+     
     <Card 
     title ="Your created campaign"
-    allcampign = {usercampaign}
+    allcampaign = {usercampaign}
     setOpenModel = {setOpenModel}
     setDonate = {setDonateCampaign}
     />
 
     {openModel && (
-      <PopUp  setOpenModel = {setOpenModel}
+      <Popup  setOpenModel = {setOpenModel}
       getDonations = {getDonations}
       donate = {donateCampaign}
       donateFunction = {donate}
