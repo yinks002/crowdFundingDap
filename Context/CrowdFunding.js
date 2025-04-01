@@ -87,9 +87,10 @@ export const CrowdFundingProvider =  ({children}) =>{
     });
 
     const currentUser = accounts[0];
-    const filteredCampaigns = allCampaigns.filter((campaign)=>
-    campaign.owner == "0xC37297b82880C3ea1926c6ba5CD386f781df514A"
+    const filteredCampaigns = allCampaigns.filter(
+        (campaign) => campaign.owner.toLowerCase() === currentUser.toLowerCase()
     );
+    console.log(currrentAccount)
 
     const userData = filteredCampaigns.map((campaign, i)=> ({
         owner: campaign.owner,
@@ -101,6 +102,7 @@ export const CrowdFundingProvider =  ({children}) =>{
         pId: i,
 
     }))
+    console.log("isssss",userData)
     return userData;
     
    };

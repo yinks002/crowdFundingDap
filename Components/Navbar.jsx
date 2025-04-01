@@ -6,7 +6,7 @@ import React, {useState, useContext} from "react";
 import { CrowdFundingContext } from "../Context/CrowdFunding";
 import {Logo, Menu} from ".";
 const Navbar = ()=>{
-    const {currentAccount, connectWallet} = useContext(CrowdFundingContext);
+    const {currrentAccount, connectWallet} = useContext(CrowdFundingContext);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuList= ["white paper", "project", "Donation", "Members"];
 
@@ -40,7 +40,7 @@ const Navbar = ()=>{
                 ))}
             </ul>
                 </div>
-                {!currentAccount  && (
+                {!currrentAccount  && (
                     <ul className="flex items-center hidden space-x-8 lg:flex">
                         <li>
                             <button onClick={()=> connectWallet()}
