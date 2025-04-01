@@ -107,7 +107,7 @@ const Hero = ({titleData, createCampaign}) => {
                     className='inline-block mb-1 font-medium'
                     >Description</label>
                     <input 
-                    onChange={()=> setCampaign({
+                    onChange={(e)=> setCampaign({
                         ...campaign,
                         description: e.target.value,
                     })}
@@ -128,7 +128,7 @@ const Hero = ({titleData, createCampaign}) => {
                     className='inline-block mb-1 font-medium'
                     >Target Amount</label>
                     <input 
-                    onChange={()=> setCampaign({
+                    onChange={(e)=> setCampaign({
                         ...campaign,
                         amount: e.target.value,
                     })}
@@ -149,7 +149,7 @@ const Hero = ({titleData, createCampaign}) => {
                     className='inline-block mb-1 font-medium'
                     >Date</label>
                     <input 
-                    onChange={()=> setCampaign({
+                    onChange={(e)=> setCampaign({
                         ...campaign,
                         deadline: e.target.value,
                     })}
@@ -166,7 +166,7 @@ const Hero = ({titleData, createCampaign}) => {
                     />
                 </div>
                 <div className='mt-4 mb-2 sm:mb-4'>
-                    <button onClick={(e)=> createCampaign(e)}
+                    <button onClick={(e)=> createNewCampaign(e)}
                     type='submit'
                     className='inline-flex iems-center justify-center
                     w-full h-12 px-6 font-medium tracking-wide text-white

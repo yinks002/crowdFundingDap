@@ -4,6 +4,7 @@
 import React, {useState, useEffect} from "react";
 import Web3Modal from "web3modal"
 import { ethers ,formatEther ,parseEther} from "ethers";
+import { CrowdFundingABI, CrowdFundingAddress } from "./constants";
 
 
 
@@ -11,10 +12,12 @@ import { ethers ,formatEther ,parseEther} from "ethers";
 
 const fetchContract= (signerOrProvider) => new ethers.Contract(CrowdFundingAddress, CrowdFundingABI, signerOrProvider);
 
+
 export const CrowdFundingContext = React.createContext();
 
 export const CrowdFundingProvider =  ({children}) =>{
     const titleData = "crowd funding contract";
+    console.log(CrowdFundingABI)
 
     const [currrentAccount, setCurrentAcount] = useState("");
     const createCampaign = async(campaign) =>{
@@ -22,9 +25,10 @@ export const CrowdFundingProvider =  ({children}) =>{
         const web3Modal = new Web3Modal();
         const connection = await web3Modal.connect();
         const provider = new ethers.BrowserProvider(connection);
-        const signer = provider.getSigner();
+        const signer = await  provider.getSigner();
         const contract = fetchContract(signer);
-        console.log(currrentAccount);
+        console.log("contract", contract)
+        console.log("accts",currrentAccount);
         try {
             const transaction = await 
             contract.createCampaign(currrentAccount,title,
@@ -41,26 +45,39 @@ export const CrowdFundingProvider =  ({children}) =>{
     }
 
     const getCampaigns = async() =>{
-        const provider = new ethers.JsonRpcProvider()
+        // const provider = new ethers.JsonRpcProvider("https://rpc.sepolia.org");
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        console.log("provider",provider)
         const contract  = fetchContract(provider);
-
-        const campaigns = await contract.getCampaigns();
-        const parsedCampaigns = campaigns.map((campaign, i)=> ({
-            owner: campaign.owner,
-            title: campaign.title,
-            description: campaign.description,
-            target: formatEther(campaign.target.toString()),
-            deadline: campaign.deadline.toNumber(),
-            amountCollected: formatEther(
-                campaign.amountCollected.toString()
-            ),
-            pId: i,
-
-        }));
-        return parsedCampaigns;
+        console.log("campcont", contract)
+        try {
+            const campaigns = await contract.getCampaigns();
+            const parsedCampaigns = campaigns.map((campaign, i) => ({
+                owner: campaign.owner,
+                title: campaign.title,
+                description: campaign.description,
+                target: formatEther(campaign.target.toString()),
+                deadline: Number(campaign.deadline),
+                amountCollected: formatEther(
+                    campaign.amountCollected.toString()
+                ),
+                pId: i,
+    
+            }));
+            console.log("parsed cmap", parsedCampaigns)
+            return parsedCampaigns;
+           
+        } catch (error) {
+            console.log("camp er",error)
+        }
+       
+        
+        
+        
     };
    const getUserCampaigns = async()=>{
-    const provider= new ethers.JsonRpcProvider();
+    // const provider = new ethers.JsonRpcProvider("https://rpc.sepolia.org");
+    const provider = new ethers.BrowserProvider(window.ethereum);
     const contract = fetchContract(provider);
 
     const allCampaigns = await contract.getCampaigns();
@@ -79,7 +96,7 @@ export const CrowdFundingProvider =  ({children}) =>{
         title: campaign.title,
         description: campaign.description,
         target: formatEther(campaign.target.toString()),
-        deadline: campaign.deadline.toNumber(),
+        deadline: Number(campaign.deadline),
         amountCollected: ethers.formatEther(campaign.amountCollected.toString()),
         pId: i,
 
@@ -92,7 +109,7 @@ export const CrowdFundingProvider =  ({children}) =>{
     const web3Modal= new Web3Modal();
     const connection =await web3Modal.connect();
     const provider = new ethers.BrowserProvider(connection);
-    const signer = provider.getSigner();
+    const signer = await provider.getSigner();
     const contract = fetchContract(signer);
 
     const campaignData = await contract.donateToCampaign(pId,{
@@ -105,7 +122,8 @@ export const CrowdFundingProvider =  ({children}) =>{
    };
 
    const getDonations = async(pId)=>{
-    const provider = new ethers.JsonRpcProvider();
+    // const provider = new ethers.JsonRpcProvider("https://rpc.sepolia.org");
+    const provider = new ethers.BrowserProvider(window.ethereum);
     const contract = fetchContract(provider);
 
     const donations = await contract.getDonators(pId);
@@ -115,7 +133,7 @@ export const CrowdFundingProvider =  ({children}) =>{
     for (let i=0; i < numberOfDonations; i++){
         parsedDonations.push({
             donator: donations[0][i],
-            donation:  formaEther(donations[1][i].toString()),
+            donation:  formatEther(donations[1][i].toString()),
              
         });
         
@@ -147,6 +165,7 @@ export const CrowdFundingProvider =  ({children}) =>{
 
     useEffect(()=>{
         checkIfwalletConnected();
+        getCampaigns();
     },[]);
 
 
