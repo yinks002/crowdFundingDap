@@ -26,7 +26,7 @@ const Hero = ({titleData, createCampaign}) => {
 
             />
 
-            <div className='relative bg-opacity-75 backgroundMain'>
+            <div className='relative bg-opacity-76 backgroundMain'>
             <svg
       className="absolute inset-x-0 bottom-0 text-white"
       viewBox="0 0 1160 163"
@@ -102,7 +102,7 @@ const Hero = ({titleData, createCampaign}) => {
                     name='firstName'
                     />
                 </div>
-                <div className='mb-1 sm:mb-2'>
+                <div className='mb-1 sm:mb-3'>
                     <label htmlFor="lastName"
                     className='inline-block mb-1 font-medium'
                     >Description</label>
